@@ -47,14 +47,7 @@ const Footer = () => {
                 <ul className="thumbnail-widget">
                   <li>
                     <div className="thumb-content">
-                      <span onClick={() => history.push("/spaces")}>List</span>
-                    </div>
-                  </li>
-                  <li>
-                    <div className="thumb-content">
-                      <span onClick={() => history.push("/gallery")}>
-                        gallery
-                      </span>
+                      <span onClick={() => history.push("/spaces")}>Ships</span>
                     </div>
                   </li>
                 </ul>

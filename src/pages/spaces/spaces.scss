@@ -30,6 +30,14 @@
   color: 	#008000;
 }
 
+.switch.btn {
+  min-width: 6rem;
+}
+
+.space-between{
+  justify-content: space-between;
+}
+
 @media only screen and (max-width: 1023px) {
   .spaces-container {
     grid-template-columns: 33% 33% 33%;

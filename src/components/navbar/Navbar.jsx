@@ -23,10 +23,7 @@ const NavbarWrapper = () => {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Nav.Item onClick={() => history.push("/spaces")}>List</Nav.Item>
-            <Nav.Item onClick={() => history.push("/gallery")}>
-              Gallery
-            </Nav.Item>
+            <Nav.Item onClick={() => history.push("/spaces")}>Ships</Nav.Item>
           </Nav>
         </Navbar.Collapse>
       </Container>

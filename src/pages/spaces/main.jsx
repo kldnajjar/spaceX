@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Dropdown } from "react-bootstrap";
+import BootstrapSwitchButton from "bootstrap-switch-button-react";
+import Gallery from "react-grid-gallery";
 
 import { getShips } from "../../services/spaces";
 import CardWrapper from "../../components/card";
@@ -13,6 +15,7 @@ const Main = () => {
   const [type, setType] = useState("");
   const [types, setTypes] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [isGallery, setIsGallery] = useState(false);
   const [results, setResults] = useState([]);
 
   useEffect(() => {
@@ -32,6 +35,22 @@ const Main = () => {
 
     loadSpaces();
   }, []);
+
+  const handleGallery = () => {
+    const obj = [];
+    results.forEach((item) => {
+      if (item.image) {
+        obj.push({
+          src: item.image,
+          thumbnail: item.image,
+          thumbnailWidth: 220,
+          thumbnailHeight: 100,
+          caption: item.name,
+        });
+      }
+    });
+    return obj;
+  };
 
   const fillTypes = (data) => {
     const newTypes = [];
@@ -76,9 +95,34 @@ const Main = () => {
     setHasMore(hasMore);
   };
 
+  const renderListView = () => {
+    return (
+      <InfiniteScroll
+        dataLength={results.length}
+        next={getMoreSpaces}
+        hasMore={hasMore}
+        loader={<h4>Space is loading</h4>}
+        endMessage={
+          <p style={{ textAlign: "center", marginTop: "1rem" }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        <div className="spaces-container">
+          {results.map((spaces) => CardWrapper(spaces))}
+        </div>
+      </InfiniteScroll>
+    );
+  };
+
+  const renderGalleryView = () => {
+    const obj = handleGallery();
+    return <Gallery images={obj} />;
+  };
+
   return (
     <>
-      <div className="d-flex mb-2">
+      <div className="d-flex space-between mb-2">
         <Dropdown>
           <Dropdown.Toggle variant="success" id="dropdown-basic">
             {type ? type : "All Types"}
@@ -98,22 +142,18 @@ const Main = () => {
             ))}
           </Dropdown.Menu>
         </Dropdown>
+
+        <BootstrapSwitchButton
+          checked={false}
+          onlabel="List View"
+          offlabel="Gallery View"
+          onChange={(checked) => {
+            setIsGallery(checked);
+          }}
+        />
       </div>
-      <InfiniteScroll
-        dataLength={results.length}
-        next={getMoreSpaces}
-        hasMore={hasMore}
-        loader={<h4>Space is loading</h4>}
-        endMessage={
-          <p style={{ textAlign: "center", marginTop: "1rem" }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
-      >
-        <div className="spaces-container">
-          {results.map((spaces) => CardWrapper(spaces))}
-        </div>
-      </InfiniteScroll>
+
+      {isGallery ? renderGalleryView() : renderListView()}
     </>
   );
 };
