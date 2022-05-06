@@ -16,7 +16,3 @@ export async function getShips(limit, offset, type) {
 
   return data["data"];
 }
-
-export default {
-  getShips,
-};

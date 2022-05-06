@@ -10,7 +10,7 @@ import CardWrapper from "../../components/card";
 import "./spaces.scss";
 
 const Main = () => {
-  const [limit, setLimit] = useState(21);
+  const limit = 21;
   const [offset, setOffset] = useState(0);
   const [type, setType] = useState("");
   const [types, setTypes] = useState([]);
@@ -28,13 +28,14 @@ const Main = () => {
         ships.pop();
       }
 
-      fillTypes(ships);
-      setResults(ships);
+      const obj = [...results, ...ships];
+      fillTypes(obj);
+      setResults(obj);
       setHasMore(hasMore);
     }
 
     loadSpaces();
-  }, []);
+  }, [offset]);
 
   const handleGallery = () => {
     const obj = [];
@@ -64,20 +65,7 @@ const Main = () => {
   };
 
   const getMoreSpaces = async () => {
-    const offset = results.length;
-    const data = await getShips(limit, offset);
-
-    let hasMore = false;
-    if (data.ships.length === 21) {
-      hasMore = true;
-      data.ships.pop();
-    }
-
-    const obj = [...results, ...data.ships];
-
-    fillTypes(obj);
-    setResults(obj);
-    setHasMore(hasMore);
+    setOffset(results.length);
   };
 
   const loadShipsByTypes = async (type) => {
@@ -144,7 +132,7 @@ const Main = () => {
         </Dropdown>
 
         <BootstrapSwitchButton
-          checked={false}
+          checked={isGallery}
           onlabel="List View"
           offlabel="Gallery View"
           onChange={(checked) => {
